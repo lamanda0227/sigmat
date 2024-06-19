@@ -49,7 +49,7 @@ buildSignatureMatrixUsingSeurat <- function(scdata,
     print(format(Sys.time(), "%H:%M:%S"))
     list.DE.group <- DEAnalysis(scdata, cell_types)
     saveRDS(list.DE.group, sprintf("%s/list.DE.group.rds", out_dir))
-
+    
     num_genes <- c()
     for (c in cell_types) {
         index <- which(cell_types == c)
@@ -72,6 +72,9 @@ buildSignatureMatrixUsingSeurat <- function(scdata,
     print("==============================")
     print("calculating optimal number of genes")
     print(format(Sys.time(), "%H:%M:%S"))
+
+    scdata_nac_mat <- GetAssayData(scdata, assay = "originalexp", layer = "data")
+    colnames(scdata_nac_mat) <- scdata@meta.data$cellType
     
     conditionNumbers <- c()
     for (g in 50:200) {
